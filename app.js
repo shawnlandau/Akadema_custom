@@ -13,6 +13,9 @@ const formState = {
   weltingColor: null,
   stitchColor: null,
   bindingColor: null,
+  twinWeltColor: null,
+  thumbPinkyColor: null,
+  logoColor: null,
   embroidery: 'no',
   embroideryText: '',
   akademaLabel: null,
@@ -40,6 +43,12 @@ document.addEventListener('DOMContentLoaded', () => {
   updateProgress();
   updatePrice();
 });
+
+// Function to update glove preview
+function updateGlovePreview() {
+  // The glove preview updates automatically via event listeners in glove-preview.js
+  // This function exists for compatibility with other parts of the code
+}
 
 // Initialize form with dynamic options
 function initializeForm() {
@@ -112,22 +121,26 @@ function populateWebStyleOptions() {
 function populateColorOptions() {
   const colorSelects = [
     'pocketColor', 'webColor', 'laceColor', 
-    'weltingColor', 'stitchColor', 'bindingColor'
+    'weltingColor', 'stitchColor', 'bindingColor',
+    'twinWeltColor', 'thumbPinkyColor', 'logoColor'
   ];
 
   colorSelects.forEach(selectId => {
     const select = document.getElementById(selectId);
-    select.innerHTML = '<option value="">Choose a color...</option>' + 
-      gloveData.colors.standard.map(color => 
-        `<option value="${color.id}" data-hex="${color.hex}">${color.name}</option>`
-      ).join('');
-    
-    // Add change listener
-    select.addEventListener('change', (e) => {
-      const field = selectId.replace('Color', '');
-      formState[selectId] = e.target.value;
-      updateProgress();
-    });
+    if (select) {
+      select.innerHTML = '<option value="">Choose a color...</option>' + 
+        gloveData.colors.standard.map(color => 
+          `<option value="${color.id}" data-hex="${color.hex}">${color.name}</option>`
+        ).join('');
+      
+      // Add change listener
+      select.addEventListener('change', (e) => {
+        const field = selectId.replace('Color', '');
+        formState[selectId] = e.target.value;
+        updateProgress();
+        updateGlovePreview();
+      });
+    }
   });
 }
 
