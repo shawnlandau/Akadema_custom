@@ -156,14 +156,15 @@ function updateNavigationButtons() {
 
 function validateCurrentStep() {
   switch (currentStep) {
-    case 1: // Glove Base
+    case 1: // Glove Base (leather, throw hand, size, welting)
       return formState.leather && formState.throwHand;
-    case 2: // Web Style
-      return formState.webStyle;
-    case 3: // Color
-      return formState.shellColor && formState.pocketColor && formState.webColor;
-    case 4: // Personalize
-      return true; // Personalization is optional
+    case 2: // Web Style (web style and size)
+      return formState.webStyle && formState.size;
+    case 3: // Color (core color selections required)
+      return formState.shellColor && formState.pocketColor && formState.webColor && 
+             formState.laceColor && formState.weltingColor;
+    case 4: // Personalize (akadema label, finger embroidery - flag and text are optional)
+      return formState.akademaLabel && formState.fingerEmbroidery;
     default:
       return true;
   }
@@ -172,8 +173,9 @@ function validateCurrentStep() {
 function getMaxAllowedStep() {
   // Allow navigation to any step that has been completed
   if (formState.leather && formState.throwHand) {
-    if (formState.webStyle) {
-      if (formState.shellColor && formState.pocketColor && formState.webColor) {
+    if (formState.webStyle && formState.size) {
+      if (formState.shellColor && formState.pocketColor && formState.webColor && 
+          formState.laceColor && formState.weltingColor) {
         return 4; // All steps available
       }
       return 3; // Up to color step
