@@ -13,6 +13,9 @@ const formState = {
   weltingColor: null,
   stitchColor: null,
   bindingColor: null,
+  twinWeltColor: null,
+  thumbPinkyColor: null,
+  logoColor: null,
   embroidery: 'no',
   embroideryText: '',
   akademaLabel: null,
@@ -33,13 +36,154 @@ const formState = {
   signature: ''
 };
 
+// Step navigation state
+let currentStep = 1;
+const totalSteps = 4; // Updated to match actual steps
+
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
   initializeForm();
   attachEventListeners();
+  initializeStepNavigation();
   updateProgress();
   updatePrice();
 });
+
+// Initialize step navigation
+function initializeStepNavigation() {
+  // Show first section
+  showStep(1);
+  
+  // Add click listeners to step navigation
+  document.querySelectorAll('.step[data-step]').forEach(step => {
+    step.addEventListener('click', (e) => {
+      const stepNumber = parseInt(e.target.getAttribute('data-step'));
+      if (stepNumber <= getMaxAllowedStep()) {
+        showStep(stepNumber);
+      }
+    });
+  });
+  
+  // Add navigation button listeners
+  document.getElementById('prevBtn').addEventListener('click', previousStep);
+  document.getElementById('nextBtn').addEventListener('click', nextStep);
+}
+
+// Function to update glove preview
+function updateGlovePreview() {
+  // The glove preview updates automatically via event listeners in glove-preview.js
+  // This function exists for compatibility with other parts of the code
+}
+
+// Step navigation functions
+function showStep(stepNumber) {
+  currentStep = stepNumber;
+  
+  // Hide all sections
+  document.querySelectorAll('.form-section').forEach(section => {
+    section.classList.remove('active');
+  });
+  
+  // Show current section
+  const currentSection = document.getElementById(`section-${stepNumber}`);
+  if (currentSection) {
+    currentSection.classList.add('active');
+  } else if (stepNumber > 4) {
+    // Show customer info section for steps beyond 4
+    document.getElementById('section-customer').classList.add('active');
+  }
+  
+  // Update step navigation visual state
+  document.querySelectorAll('.step').forEach(step => {
+    step.classList.remove('active');
+  });
+  
+  const activeStepElement = document.querySelector(`.step[data-step="${stepNumber}"]`);
+  if (activeStepElement) {
+    activeStepElement.classList.add('active');
+  }
+  
+  // Update navigation buttons
+  updateNavigationButtons();
+  
+  // Update progress
+  updateProgress();
+}
+
+function nextStep() {
+  if (validateCurrentStep() && currentStep < totalSteps) {
+    showStep(currentStep + 1);
+  } else if (currentStep === totalSteps && validateCurrentStep()) {
+    // Show customer info section
+    document.querySelectorAll('.form-section').forEach(section => {
+      section.classList.remove('active');
+    });
+    document.getElementById('section-customer').classList.add('active');
+    currentStep = 5; // Customer info step
+    updateNavigationButtons();
+  }
+}
+
+function previousStep() {
+  if (currentStep > 1) {
+    if (currentStep === 5) {
+      // Coming back from customer info
+      showStep(totalSteps);
+    } else {
+      showStep(currentStep - 1);
+    }
+  }
+}
+
+function updateNavigationButtons() {
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const submitBtn = document.getElementById('submitBtn');
+  
+  // Previous button
+  prevBtn.style.display = currentStep > 1 ? 'inline-block' : 'none';
+  
+  // Next/Submit buttons
+  if (currentStep === 5) {
+    // Customer info step
+    nextBtn.style.display = 'none';
+    submitBtn.style.display = 'inline-block';
+  } else {
+    nextBtn.style.display = 'inline-block';
+    submitBtn.style.display = 'none';
+  }
+}
+
+function validateCurrentStep() {
+  switch (currentStep) {
+    case 1: // Glove Base (leather, throw hand, size, welting)
+      return formState.leather && formState.throwHand;
+    case 2: // Web Style (web style and size)
+      return formState.webStyle && formState.size;
+    case 3: // Color (core color selections required)
+      return formState.shellColor && formState.pocketColor && formState.webColor && 
+             formState.laceColor && formState.weltingColor;
+    case 4: // Personalize (akadema label, finger embroidery - flag and text are optional)
+      return formState.akademaLabel && formState.fingerEmbroidery;
+    default:
+      return true;
+  }
+}
+
+function getMaxAllowedStep() {
+  // Allow navigation to any step that has been completed
+  if (formState.leather && formState.throwHand) {
+    if (formState.webStyle && formState.size) {
+      if (formState.shellColor && formState.pocketColor && formState.webColor && 
+          formState.laceColor && formState.weltingColor) {
+        return 4; // All steps available
+      }
+      return 3; // Up to color step
+    }
+    return 2; // Up to web style step
+  }
+  return 1; // Only first step
+}
 
 // Initialize form with dynamic options
 function initializeForm() {
@@ -90,6 +234,7 @@ function populateThrowHandOptions() {
     input.addEventListener('change', (e) => {
       formState.throwHand = e.target.value;
       updateProgress();
+      updateNavigationButtons();
       // Update UI
       container.querySelectorAll('.radio-option').forEach(opt => opt.classList.remove('selected'));
       e.target.closest('.radio-option').classList.add('selected');
@@ -112,22 +257,27 @@ function populateWebStyleOptions() {
 function populateColorOptions() {
   const colorSelects = [
     'pocketColor', 'webColor', 'laceColor', 
-    'weltingColor', 'stitchColor', 'bindingColor'
+    'weltingColor', 'stitchColor', 'bindingColor',
+    'twinWeltColor', 'thumbPinkyColor', 'logoColor'
   ];
 
   colorSelects.forEach(selectId => {
     const select = document.getElementById(selectId);
-    select.innerHTML = '<option value="">Choose a color...</option>' + 
-      gloveData.colors.standard.map(color => 
-        `<option value="${color.id}" data-hex="${color.hex}">${color.name}</option>`
-      ).join('');
-    
-    // Add change listener
-    select.addEventListener('change', (e) => {
-      const field = selectId.replace('Color', '');
-      formState[selectId] = e.target.value;
-      updateProgress();
-    });
+    if (select) {
+      select.innerHTML = '<option value="">Choose a color...</option>' + 
+        gloveData.colors.standard.map(color => 
+          `<option value="${color.id}" data-hex="${color.hex}">${color.name}</option>`
+        ).join('');
+      
+      // Add change listener
+      select.addEventListener('change', (e) => {
+        const field = selectId.replace('Color', '');
+        formState[selectId] = e.target.value;
+        updateProgress();
+        updateNavigationButtons();
+        updateGlovePreview();
+      });
+    }
   });
 }
 
@@ -217,6 +367,7 @@ function handleLeatherChange(e) {
   formState.leather = e.target.value;
   updateProgress();
   updatePrice();
+  updateNavigationButtons();
   
   // Update shell color options based on leather
   const shellColorSelect = document.getElementById('shellColor');
@@ -245,6 +396,8 @@ function handleLeatherChange(e) {
 function handleWebStyleChange(e) {
   const styleId = e.target.value;
   formState.webStyle = styleId;
+  updateProgress();
+  updateNavigationButtons();
   
   if (!styleId) return;
   
@@ -265,10 +418,11 @@ function handleWebStyleChange(e) {
   // Reset size selection
   formState.size = null;
   
-  sizeSelect.addEventListener('change', (e) => {
+  sizeSelect.onchange = (e) => {
     formState.size = e.target.value;
     updateProgress();
-  });
+    updateNavigationButtons();
+  };
   
   updateProgress();
 }
@@ -347,59 +501,24 @@ function attachEventListeners() {
 
 // Update progress bar
 function updateProgress() {
-  const totalSteps = 13;
-  let completedSteps = 0;
+  let completedFields = 0;
+  const requiredFields = [
+    'leather', 'throwHand', 'webStyle', 'shellColor', 'pocketColor', 'webColor',
+    'laceColor', 'weltingColor', 'stitchColor', 'bindingColor', 'akademaLabel'
+  ];
 
-  // Step 1: Leather
-  if (formState.leather) completedSteps++;
-  
-  // Step 2: Throw hand
-  if (formState.throwHand) completedSteps++;
-  
-  // Step 3: Web style
-  if (formState.webStyle) completedSteps++;
-  
-  // Step 4: Size
-  if (formState.size) completedSteps++;
-  
-  // Step 5a: Shell color
-  if (formState.shellColor) completedSteps++;
-  
-  // Step 5b: Pocket color
-  if (formState.pocketColor) completedSteps++;
-  
-  // Step 5c: Web color
-  if (formState.webColor) completedSteps++;
-  
-  // Step 6: Lace color
-  if (formState.laceColor) completedSteps++;
-  
-  // Step 7: Welting color
-  if (formState.weltingColor) completedSteps++;
-  
-  // Step 8: Stitch color
-  if (formState.stitchColor) completedSteps++;
-  
-  // Step 9: Binding color
-  if (formState.bindingColor) completedSteps++;
-  
-  // Step 10: Embroidery
-  if (formState.embroidery === 'no' || (formState.embroidery === 'yes' && formState.embroideryText)) {
-    completedSteps++;
-  }
-  
-  // Step 11: Label & Finger embroidery (always has defaults)
-  if (formState.akademaLabel && formState.fingerEmbroidery) completedSteps++;
-  
-  // Step 12: Flag (always has default)
-  if (formState.flag) completedSteps++;
+  requiredFields.forEach(field => {
+    if (formState[field]) completedFields++;
+  });
 
-  // Calculate current step (next step to complete)
-  const currentStep = Math.min(completedSteps + 1, totalSteps);
-
-  const progressPercentage = (completedSteps / totalSteps) * 100;
+  const progressPercentage = (completedFields / requiredFields.length) * 100;
   document.getElementById('progressBar').style.width = `${progressPercentage}%`;
-  document.getElementById('progressText').textContent = `Step ${currentStep} of ${totalSteps}`;
+  
+  let stepText = `Step ${currentStep} of ${totalSteps}`;
+  if (currentStep === 5) {
+    stepText = 'Customer Information';
+  }
+  document.getElementById('progressText').textContent = stepText;
 }
 
 // Handle form submission

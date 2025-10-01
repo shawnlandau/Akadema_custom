@@ -192,6 +192,11 @@ body {
 .form-section {
   padding: var(--spacing-xl);
   border-bottom: 1px solid var(--color-gray-200);
+  display: none; /* Hide all sections by default */
+}
+
+.form-section.active {
+  display: block; /* Show only active section */
 }
 
 .form-section:last-child {
@@ -536,9 +541,19 @@ body {
 }
 
 /* ===== Form Actions ===== */
-.form-actions {
+.form-actions, .form-navigation {
   text-align: center;
   margin: var(--spacing-2xl) 0;
+}
+
+.form-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  border-top: 1px solid var(--color-gray-200);
+  background: var(--color-gray-50);
 }
 
 .btn-submit {
@@ -567,6 +582,39 @@ body {
   background: var(--color-gray-300);
   cursor: not-allowed;
   transform: none;
+}
+
+/* Navigation buttons */
+.btn-primary, .btn-secondary {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
+  color: var(--color-white);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-secondary {
+  background: var(--color-gray-200);
+  color: var(--color-gray-700);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary:hover {
+  background: var(--color-gray-300);
+  transform: translateY(-1px);
 }
 
 /* ===== Modal ===== */
