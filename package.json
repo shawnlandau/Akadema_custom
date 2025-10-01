@@ -19,6 +19,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/yourusername/akadema-custom-glove-designer"
+  },
+  "dependencies": {
+    "netlify-cli": "^23.9.1"
   }
 }
-
