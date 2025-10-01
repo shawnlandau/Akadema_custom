@@ -1,21 +1,28 @@
 /* ===== CSS Variables & Reset ===== */
 :root {
-  /* Color Palette - Premium Sports Gear */
-  --color-primary: #3d2817;        /* Deep brown */
-  --color-primary-dark: #2a1a0f;   /* Darker brown */
-  --color-accent: #1565c0;         /* Royal blue */
-  --color-accent-light: #2962ff;   /* Bright blue */
-  --color-tan: #d2a679;            /* Tan/leather */
-  --color-tan-light: #e8d4b8;      /* Light tan */
-  --color-red: #c62828;            /* Red accent */
-  --color-black: #1a1a1a;          /* Deep black */
+  /* Color Palette - Akadema Pro Theme */
+  --color-primary: #1a1a1a;        /* Dark black */
+  --color-primary-dark: #000000;   /* Pure black */
+  --color-accent: #ff6b35;         /* Akadema orange */
+  --color-accent-light: #ff8c5a;   /* Light orange */
+  --color-accent-dark: #e55a2b;    /* Dark orange */
+  --color-secondary: #2c2c2c;      /* Dark gray */
+  --color-tertiary: #404040;       /* Medium gray */
+  --color-tan: #d4af8c;            /* Leather tan */
+  --color-tan-light: #f4e4d4;      /* Light tan */
+  --color-red: #dc3545;            /* Red accent */
+  --color-black: #000000;          /* Pure black */
   --color-white: #ffffff;
-  --color-gray-100: #f5f5f5;
-  --color-gray-200: #e0e0e0;
-  --color-gray-300: #bdbdbd;
-  --color-gray-400: #9e9e9e;
-  --color-gray-600: #757575;
-  --color-gray-800: #424242;
+  --color-gray-50: #f8f9fa;
+  --color-gray-100: #e9ecef;
+  --color-gray-200: #dee2e6;
+  --color-gray-300: #ced4da;
+  --color-gray-400: #adb5bd;
+  --color-gray-500: #6c757d;
+  --color-gray-600: #495057;
+  --color-gray-700: #343a40;
+  --color-gray-800: #212529;
+  --color-gray-900: #1a1a1a;
 
   /* Spacing */
   --spacing-xs: 0.5rem;
@@ -65,123 +72,143 @@ html {
 
 body {
   font-family: var(--font-family);
-  background: linear-gradient(135deg, var(--color-gray-100) 0%, var(--color-tan-light) 100%);
-  color: var(--color-gray-800);
+  background: var(--color-black);
+  color: var(--color-white);
   line-height: 1.6;
   min-height: 100vh;
 }
 
 /* ===== Container & Layout ===== */
 .container {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: var(--spacing-lg) var(--spacing-md);
+  padding: 0;
+  background: var(--color-black);
 }
 
 .main-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-xl);
-  margin-top: var(--spacing-lg);
+  gap: 0;
+  min-height: 100vh;
 }
 
 .preview-panel {
-  background: var(--color-white);
-  border-radius: var(--radius-xl);
-  padding: var(--spacing-lg);
-  box-shadow: var(--shadow-md);
+  background: var(--color-secondary);
+  padding: var(--spacing-xl);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   position: sticky;
-  top: var(--spacing-lg);
-  height: fit-content;
+  top: 0;
+  height: 100vh;
 }
 
 .form-panel {
-  min-width: 0; /* Prevent grid overflow */
+  background: var(--color-white);
+  color: var(--color-black);
+  overflow-y: auto;
+  height: 100vh;
 }
 
 /* ===== Header ===== */
 .header {
-  text-align: center;
-  margin-bottom: var(--spacing-xl);
-  padding: var(--spacing-xl) 0;
+  background: var(--color-black);
+  padding: var(--spacing-lg) var(--spacing-xl);
+  border-bottom: 1px solid var(--color-gray-700);
 }
 
 .header__title {
-  font-size: var(--font-size-3xl);
+  font-size: var(--font-size-2xl);
   font-weight: 700;
-  color: var(--color-primary);
-  margin-bottom: var(--spacing-sm);
-  letter-spacing: -0.02em;
+  color: var(--color-white);
+  margin-bottom: var(--spacing-xs);
+  letter-spacing: -0.01em;
 }
 
 .header__subtitle {
-  font-size: var(--font-size-lg);
-  color: var(--color-gray-600);
-  margin-bottom: var(--spacing-lg);
+  font-size: var(--font-size-base);
+  color: var(--color-gray-400);
+  margin-bottom: var(--spacing-md);
 }
 
 .progress-bar {
   width: 100%;
-  height: 8px;
-  background-color: var(--color-gray-200);
-  border-radius: var(--radius-xl);
+  height: 4px;
+  background-color: var(--color-gray-700);
+  border-radius: var(--radius-sm);
   overflow: hidden;
   margin-bottom: var(--spacing-sm);
 }
 
 .progress-bar__fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-accent-light) 100%);
+  background: var(--color-accent);
   transition: width var(--transition-slow);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-sm);
 }
 
 .progress-text {
   font-size: var(--font-size-sm);
-  color: var(--color-gray-600);
+  color: var(--color-gray-400);
   font-weight: 500;
+}
+
+/* ===== Step Navigation ===== */
+.step-navigation {
+  display: flex;
+  background: var(--color-gray-100);
+  border-bottom: 1px solid var(--color-gray-200);
+  padding: 0;
+}
+
+.step {
+  flex: 1;
+  padding: var(--spacing-md) var(--spacing-lg);
+  text-align: center;
+  font-weight: 600;
+  color: var(--color-gray-500);
+  border-right: 1px solid var(--color-gray-200);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.step:last-child {
+  border-right: none;
+}
+
+.step.active {
+  background: var(--color-accent);
+  color: var(--color-white);
+}
+
+.step:hover:not(.active) {
+  background: var(--color-gray-200);
+  color: var(--color-gray-700);
 }
 
 /* ===== Form Sections ===== */
 .form-section {
-  background: var(--color-white);
-  border-radius: var(--radius-xl);
-  padding: var(--spacing-lg);
-  margin-bottom: var(--spacing-lg);
-  box-shadow: var(--shadow-md);
-  transition: box-shadow var(--transition-base);
+  padding: var(--spacing-xl);
+  border-bottom: 1px solid var(--color-gray-200);
 }
 
-.form-section:hover {
-  box-shadow: var(--shadow-lg);
+.form-section:last-child {
+  border-bottom: none;
 }
 
 .section-header {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-md);
   margin-bottom: var(--spacing-lg);
-}
-
-.section-number {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-  color: var(--color-white);
-  border-radius: 50%;
-  font-weight: 600;
-  font-size: var(--font-size-lg);
-  flex-shrink: 0;
 }
 
 .section-title {
   font-size: var(--font-size-xl);
-  font-weight: 600;
-  color: var(--color-primary);
-  letter-spacing: -0.01em;
+  font-weight: 700;
+  color: var(--color-black);
+  margin-bottom: var(--spacing-md);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .section-note {
@@ -205,25 +232,24 @@ body {
 /* ===== Card Grid (Leather Selection) ===== */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: var(--spacing-md);
 }
 
 .card {
   position: relative;
   padding: var(--spacing-lg);
-  border: 2px solid var(--color-gray-200);
-  border-radius: var(--radius-lg);
+  border: 2px solid var(--color-gray-300);
+  border-radius: var(--radius-md);
   background: var(--color-white);
   cursor: pointer;
   transition: all var(--transition-base);
-  text-align: center;
+  text-align: left;
 }
 
 .card:hover {
   border-color: var(--color-accent);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.15);
 }
 
 .card input[type="radio"] {
@@ -233,32 +259,38 @@ body {
 }
 
 .card input[type="radio"]:checked + .card__content {
-  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-light) 100%);
+  background: var(--color-accent);
   color: var(--color-white);
 }
 
-.card input[type="radio"]:checked ~ .card__border {
-  border-color: var(--color-accent);
-}
-
 .card__content {
-  border-radius: var(--radius-md);
-  padding: var(--spacing-md);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-sm);
   transition: all var(--transition-base);
 }
 
 .card__title {
   font-size: var(--font-size-lg);
-  font-weight: 600;
+  font-weight: 700;
+  margin-bottom: var(--spacing-xs);
+  color: var(--color-black);
+}
+
+.card__price {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-accent);
   margin-bottom: var(--spacing-xs);
 }
 
 .card__description {
   font-size: var(--font-size-sm);
-  opacity: 0.9;
+  color: var(--color-gray-600);
+  margin-bottom: var(--spacing-sm);
 }
 
 .card input[type="radio"]:checked + .card__content .card__title,
+.card input[type="radio"]:checked + .card__content .card__price,
 .card input[type="radio"]:checked + .card__content .card__description {
   color: var(--color-white);
 }
@@ -743,19 +775,45 @@ body {
 /* ===== Glove Preview Styles ===== */
 .preview-header {
   text-align: center;
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
 }
 
 .preview-header h2 {
-  font-size: var(--font-size-xl);
-  font-weight: 600;
-  color: var(--color-primary);
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  color: var(--color-white);
   margin-bottom: var(--spacing-xs);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .preview-subtitle {
-  color: var(--color-gray-600);
+  color: var(--color-gray-400);
+  font-size: var(--font-size-base);
+  font-weight: 500;
+}
+
+.price-display {
+  background: var(--color-black);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  text-align: center;
+  margin-top: var(--spacing-lg);
+  border: 2px solid var(--color-accent);
+}
+
+.price-label {
   font-size: var(--font-size-sm);
+  color: var(--color-gray-400);
+  margin-bottom: var(--spacing-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.price-amount {
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+  color: var(--color-accent);
 }
 
 .glove-preview-container {
@@ -791,10 +849,11 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, var(--color-gray-100) 0%, var(--color-tan-light) 100%);
+  background: var(--color-black);
   border-radius: var(--radius-lg);
   padding: var(--spacing-lg);
   margin-bottom: var(--spacing-md);
+  border: 1px solid var(--color-gray-700);
 }
 
 .glove-svg {
@@ -808,20 +867,21 @@ body {
 .glove-info {
   text-align: center;
   padding: var(--spacing-md);
-  background: var(--color-gray-100);
+  background: var(--color-gray-800);
   border-radius: var(--radius-md);
+  border: 1px solid var(--color-gray-700);
 }
 
 .glove-info h3 {
   font-size: var(--font-size-lg);
   font-weight: 600;
-  color: var(--color-primary);
+  color: var(--color-white);
   margin-bottom: var(--spacing-sm);
 }
 
 .glove-info p {
   font-size: var(--font-size-sm);
-  color: var(--color-gray-600);
+  color: var(--color-gray-400);
   margin-bottom: var(--spacing-xs);
 }
 

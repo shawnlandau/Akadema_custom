@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initializeForm();
   attachEventListeners();
   updateProgress();
+  updatePrice();
 });
 
 // Initialize form with dynamic options
@@ -59,6 +60,7 @@ function populateLeatherOptions() {
       <input type="radio" name="leather" value="${leather.id}" required>
       <div class="card__content">
         <h3 class="card__title">${leather.name}</h3>
+        <div class="card__price">$${leather.price}</div>
         <p class="card__description">${leather.description}</p>
       </div>
     </label>
@@ -214,6 +216,7 @@ function populateFlagOptions() {
 function handleLeatherChange(e) {
   formState.leather = e.target.value;
   updateProgress();
+  updatePrice();
   
   // Update shell color options based on leather
   const shellColorSelect = document.getElementById('shellColor');
@@ -321,6 +324,10 @@ function attachEventListeners() {
       updateProgress();
     });
   });
+
+  // Add price update listeners to all form changes
+  document.addEventListener('change', updatePrice);
+  document.addEventListener('input', updatePrice);
 
   // Form submission
   const form = document.getElementById('gloveForm');
@@ -603,6 +610,24 @@ function submitToNetlify(data) {
   });
 }
 
+// Update price display
+function updatePrice() {
+  let totalPrice = 0;
+  
+  // Add leather price
+  if (formState.leather) {
+    const leather = gloveData.leathers.find(l => l.id === formState.leather);
+    if (leather) {
+      totalPrice += leather.price;
+    }
+  }
+  
+  // Add any additional pricing logic here
+  // (e.g., premium colors, custom embroidery, etc.)
+  
+  document.getElementById('totalPrice').textContent = `$${totalPrice}`;
+}
+
 // Reset form state (optional)
 function resetFormState() {
   Object.keys(formState).forEach(key => {
@@ -615,5 +640,6 @@ function resetFormState() {
   formState.embroidery = 'no';
   formState.flag = 'none';
   updateProgress();
+  updatePrice();
 }
 

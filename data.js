@@ -2,10 +2,10 @@
 
 const gloveData = {
   leathers: [
-    { id: 'torino', name: 'Torino', description: 'Premium quality leather' },
-    { id: 'precision', name: 'Precision Leather', description: 'High-performance material' },
-    { id: 'pro-leather', name: 'Pro Leather', description: 'Professional grade' },
-    { id: 'pro-soft', name: 'Pro Soft', description: 'Soft, game-ready feel' }
+    { id: 'torino', name: 'Torino', description: 'Premium quality leather', price: 475 },
+    { id: 'prosoft-elite', name: 'Prosoft Elite', description: 'Elite performance material', price: 425 },
+    { id: 'pro-soft', name: 'Pro Soft', description: 'Soft, game-ready feel', price: 375 },
+    { id: 'prodigy', name: 'Prodigy', description: 'Professional grade', price: 325 }
   ],
 
   throwHands: [
