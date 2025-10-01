@@ -22,8 +22,22 @@
       <p class="progress-text" id="progressText">Step 1 of 13</p>
     </header>
 
-    <!-- Main Form -->
-    <form id="gloveForm" class="glove-form" novalidate>
+    <!-- Main Content Layout -->
+    <div class="main-content">
+      <!-- Glove Preview Panel -->
+      <div class="preview-panel">
+        <div class="preview-header">
+          <h2>Your Custom Glove</h2>
+          <p class="preview-subtitle">See your changes in real-time</p>
+        </div>
+        <div id="glovePreview" class="glove-preview">
+          <!-- Glove SVG will be inserted here by JavaScript -->
+        </div>
+      </div>
+
+      <!-- Form Panel -->
+      <div class="form-panel">
+        <form id="gloveForm" class="glove-form" novalidate>
       
       <!-- Step 1: Leather Selection -->
       <section class="form-section" id="section-1">
@@ -371,6 +385,8 @@
         </button>
       </div>
     </form>
+      </div>
+    </div>
   </div>
 
   <!-- Summary Modal -->
@@ -413,6 +429,7 @@
   </div>
 
   <script src="data.js"></script>
+  <script src="glove-preview.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
