@@ -387,9 +387,12 @@ function updateProgress() {
   // Step 12: Flag (always has default)
   if (formState.flag) completedSteps++;
 
+  // Calculate current step (next step to complete)
+  const currentStep = Math.min(completedSteps + 1, totalSteps);
+
   const progressPercentage = (completedSteps / totalSteps) * 100;
   document.getElementById('progressBar').style.width = `${progressPercentage}%`;
-  document.getElementById('progressText').textContent = `Step ${completedSteps} of ${totalSteps}`;
+  document.getElementById('progressText').textContent = `Step ${currentStep} of ${totalSteps}`;
 }
 
 // Handle form submission
